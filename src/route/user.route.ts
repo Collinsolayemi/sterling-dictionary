@@ -2,7 +2,7 @@ import { Router } from 'express';
 import {
   login_validation,
   signup_validation,
-} from '../utilis/validation/user/create.user.validation';
+} from '../utilis/validation/user/user.validation';
 import { AuthController } from '../controller/auth.controller';
 
 const router = Router();
