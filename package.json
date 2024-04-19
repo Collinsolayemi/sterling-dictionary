@@ -1,0 +1,32 @@
+{
+  "name": "sterling-dict",
+  "version": "1.0.0",
+  "description": "**_The `Sterling Dictionary` is an api built using express js and mySQL DB with authentication and authorization. It is an searching platform where user can search any word of their choice and get the meaning and if they get any mail and they dont know the meaning of a word there, they can hover on the word and get the meaning ._**",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "npm run build && node dist/app.js",
+    "start:dev": "npm run build && nodemon app.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/dotenv": "^8.2.0",
+    "dotenv": "^16.4.5",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/express": "^4.17.21",
+    "@types/express-validator": "^3.0.0",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/node": "^20.12.7",
+    "bcrypt": "^5.1.1",
+    "express": "^4.19.2",
+    "express-validator": "^7.0.1",
+    "jsonwebtoken": "^9.0.2",
+    "mysql": "^2.18.1",
+    "typeorm": "^0.3.20"
+  }
+}
