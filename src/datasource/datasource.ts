@@ -6,7 +6,8 @@ import { User } from '../entity/user.entity';
 
 dotenv.config();
 
-const { DB_HOST, DB_USERNAME, DB_DATABASE, NODE_ENV, DB_URL } = process.env;
+const { DB_HOST, DB_USERNAME, DB_DATABASE, DB_URL, DB_PASSWORD, NODE_ENV } =
+  process.env;
 
 export const AppDataSource = new DataSource({
   type: 'mysql',
@@ -14,10 +15,9 @@ export const AppDataSource = new DataSource({
   host: DB_HOST,
   port: 3306,
   username: DB_USERNAME,
-  password: '',
+  password: NODE_ENV === 'dev' ? DB_PASSWORD : '',
   database: DB_DATABASE,
   entities: [User],
   migrations: [__dirname + '../migration/*.ts'],
-  synchronize: true,
-  // synchronize: NODE_ENV === 'dev' ? true : false,
+  synchronize: NODE_ENV === 'dev' ? true : false,
 });
