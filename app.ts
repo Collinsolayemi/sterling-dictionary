@@ -1,4 +1,5 @@
 import express from 'express';
+import { Request, Response } from 'express';
 import * as dotenv from 'dotenv';
 import authRouter from './src/route/user.route';
 
@@ -13,8 +14,12 @@ const port = process.env.PORT;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.get('/health', (req: Request, res: Response) => {
+  return res.status(200).json({
+    message: 'server is running',
+  });
+});
 app.use('/api/v1', authRouter);
-
 
 app.use(errorMiddleware);
 
@@ -27,7 +32,7 @@ AppDataSource.initialize()
   })
   .catch((error) => console.log(error));
 
-  //to add user to the req body globally
+//to add user to the req body globally
 declare global {
   namespace Express {
     interface Request {
