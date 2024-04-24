@@ -1,4 +1,5 @@
 import express from 'express';
+import { Request, Response } from 'express';
 import * as dotenv from 'dotenv';
 import authRouter from './src/route/user.route';
 import { AppDataSource } from './src/datasource/datasource';
@@ -31,6 +32,13 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/api/v1', authRouter);
 
 // Error Handling Middleware
+app.get('/health', (req: Request, res: Response) => {
+  return res.status(200).json({
+    message: 'server is running',
+  });
+});
+app.use('/api/v1', authRouter);
+
 app.use(errorMiddleware);
 
 // Initialize Data Source and Start Server
@@ -44,6 +52,7 @@ AppDataSource.initialize()
   .catch((error) => console.log(error));
 
 // Global Type Declaration for Express Request
+//to add user to the req body globally
 declare global {
   namespace Express {
     interface Request {

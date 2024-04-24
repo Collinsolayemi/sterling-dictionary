@@ -12,4 +12,5 @@ router.post('/signup', signup_validation(), authController.signup);
 
 router.post('/login', login_validation(), authController.login);
 
+
 export default router;
