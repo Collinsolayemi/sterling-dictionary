@@ -70,5 +70,5 @@ export class AuthController {
     return res.status(200).json({ accessTokens });
   });
 
-  createSubAdmin = asyncWrapper(async (req: Request, res: Response) => { })
+  createSubAdmin = asyncWrapper(async (req: Request, res: Response) => {});
 }

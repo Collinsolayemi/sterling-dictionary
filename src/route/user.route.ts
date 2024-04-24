@@ -8,7 +8,7 @@ import { AuthController } from '../controller/auth.controller';
 const router = Router();
 const authController = new AuthController();
 
-router.post('/create-user', signup_validation(), authController.signup);
+router.post('/signup', signup_validation(), authController.signup);
 
 router.post('/login', login_validation(), authController.login);
 

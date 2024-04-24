@@ -1,48 +1,39 @@
 import express from 'express';
 import * as dotenv from 'dotenv';
 import authRouter from './src/route/user.route';
-
 import { AppDataSource } from './src/datasource/datasource';
 import errorMiddleware from './src/middleware/error/error.middleware';
-dotenv.config({ path: './.env' });
-import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
-import { url } from 'inspector';
+import { swaggerDefinition } from './swagger';
+import path from 'path';
 
 const app = express();
 
-const port = process.env.PORT;
+dotenv.config({ path: './.env' });
 
-const swaggerOptions = {
-  swaggerDefinition: {
-    openapi: '3.0.0',
-    info: {
-      title: 'Sample API',
-      version: '1.0.0',
-      description: 'A sample API with Swagger documentation',
-    },
-    servers: [
-      {
-        url: 'http://localhost:3000',
-        description: 'Development server',
-      },
-    ],
-  },
-  apis: ['dist/src/route/*.js'],
-};
+const port = process.env.PORT || 3000;
 
-// Initialize Swagger-jsdoc
-const swaggerSpec = swaggerJsdoc(swaggerOptions);
-
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
+// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Swagger Setup
+const routeFolderPath = path.join(__dirname, '..', 'src', 'route');
+const options = {
+  swaggerDefinition,
+  apis: [path.join(routeFolderPath, '*.ts')],
+};
+const swaggerSpec = swaggerJSDoc(options);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+// Routes
 app.use('/api/v1', authRouter);
 
+// Error Handling Middleware
 app.use(errorMiddleware);
 
+// Initialize Data Source and Start Server
 AppDataSource.initialize()
   .then(async () => {
     app.listen(port, () => {
@@ -52,7 +43,7 @@ AppDataSource.initialize()
   })
   .catch((error) => console.log(error));
 
-//to add user to the req body globally
+// Global Type Declaration for Express Request
 declare global {
   namespace Express {
     interface Request {
