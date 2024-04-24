@@ -4,7 +4,7 @@ import { check, validationResult } from 'express-validator';
 export const signup_validation = () => {
   return [
     check('email').isEmail().withMessage('Input a valid email'),
-    check('password').isStrongPassword().withMessage('Password is not strong'),
+    check('password').isString().withMessage('Password is not strong'),
 
     (req: Request, res: Response, next: NextFunction) => {
       const errors = validationResult(req);
