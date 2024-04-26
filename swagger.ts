@@ -17,9 +17,61 @@ export const swaggerDefinition = {
     },
   ],
   paths: {
-    '/signup': {
+    '/onboard-user': {
       post: {
-        summary: 'Onboard new users',
+        summary: 'Onboard Users',
+        tags: ['Auth'],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  email: { type: 'string' },
+                  password: { type: 'string' },
+                },
+              },
+            },
+          },
+        },
+        responses: {
+          '201': {
+            description: 'Successful operation',
+          },
+        },
+      },
+    },
+
+    '/onboard-admin': {
+      post: {
+        summary: 'Onboard Admin',
+        tags: ['Auth'],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  email: { type: 'string' },
+                  password: { type: 'string' },
+                },
+              },
+            },
+          },
+        },
+        responses: {
+          '201': {
+            description: 'Successful operation',
+          },
+        },
+      },
+    },
+
+    '/onboard-subadmin': {
+      post: {
+        summary: 'Onboard Sub-Admin',
         tags: ['Auth'],
         requestBody: {
           required: true,

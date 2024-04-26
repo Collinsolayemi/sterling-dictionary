@@ -13,8 +13,8 @@ import { randomBytes } from 'crypto';
 import EmailSender, { EmailOptions } from '../utilis/email/email';
 
 export class AuthController {
-  signup = asyncWrapper(async (req: Request, res: Response) => {
-    const { email, password, role } = req.body;
+  onboardUser = asyncWrapper(async (req: Request, res: Response) => {
+    const { email, password } = req.body;
 
     const userExist = await User.findOne({ where: { email } });
 
@@ -29,7 +29,65 @@ export class AuthController {
     const user = new User();
     user.email = email;
     user.password = hashPassword;
-    user.role = role ? Role.ADMIN : Role.USER;
+    user.role = Role.USER;
+    user.save();
+
+    const accessTokens = await AuthMiddleware.generateTokens(
+      user.id,
+      user.email
+    );
+
+    const userRole = user.role;
+
+    return res.status(201).json({ userRole, accessTokens });
+  });
+
+  onboardAdmin = asyncWrapper(async (req: Request, res: Response) => {
+    const { email, password } = req.body;
+
+    const userExist = await User.findOne({ where: { email } });
+
+    if (userExist) {
+      throw new EmailAlreadyExistsExeption('Email already exists');
+    }
+
+    const saltRounds = 10;
+
+    const hashPassword = await bcrypt.hash(password, saltRounds);
+
+    const user = new User();
+    user.email = email;
+    user.password = hashPassword;
+    user.role = Role.ADMIN;
+    user.save();
+
+    const accessTokens = await AuthMiddleware.generateTokens(
+      user.id,
+      user.email
+    );
+
+    const userRole = user.role;
+
+    return res.status(201).json({ userRole, accessTokens });
+  });
+
+  onboardSubAdmin = asyncWrapper(async (req: Request, res: Response) => {
+    const { email, password } = req.body;
+
+    const userExist = await User.findOne({ where: { email } });
+
+    if (userExist) {
+      throw new EmailAlreadyExistsExeption('Email already exists');
+    }
+
+    const saltRounds = 10;
+
+    const hashPassword = await bcrypt.hash(password, saltRounds);
+
+    const user = new User();
+    user.email = email;
+    user.password = hashPassword;
+    user.role = Role.SUB_ADMIN;
     user.save();
 
     const accessTokens = await AuthMiddleware.generateTokens(
@@ -133,5 +191,7 @@ export class AuthController {
     return res.status(200).json({ message: 'Password reset successfully' });
   });
 
-  createSubAdmin = asyncWrapper(async (req: Request, res: Response) => {});
+  createSubAdmin = asyncWrapper(async (req: Request, res: Response) => {
+    const { email, password } = req.body;
+  });
 }
