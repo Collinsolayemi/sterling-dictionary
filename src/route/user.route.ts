@@ -6,12 +6,19 @@ import {
   signup_validation,
 } from '../utilis/validation/user/user.validation';
 import { AuthController } from '../controller/auth.controller';
+import handleRestriction from '../middleware/role/user.role';
 
 const router = Router();
 const authController = new AuthController();
 
-router.post('/signup', signup_validation(), authController.signup);
-
+router.post('/onboard-user', signup_validation(), authController.onboardUser);
+router.post('/onboard-admin', signup_validation(), authController.onboardAdmin);
+router.post(
+  '/onboard-subadmin',
+  handleRestriction.handleAdminRestriction,
+  signup_validation(),
+  authController.onboardSubAdmin
+);
 router.post('/login', login_validation(), authController.login);
 
 router.post(
