@@ -251,6 +251,31 @@ export const swaggerDefinition = {
         },
       },
     },
+
+    '/search-word': {
+      post: {
+        summary: 'Search for words',
+        tags: ['Dictionary'],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  word: { type: 'string' },
+                },
+              },
+            },
+          },
+        },
+        responses: {
+          '200': {
+            description: 'Successful operation',
+          },
+        },
+      },
+    },
   },
   security: [
     {

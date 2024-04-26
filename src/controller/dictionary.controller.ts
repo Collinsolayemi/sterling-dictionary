@@ -65,5 +65,17 @@ export class DictionaryController {
     res.status(200).json({ message: 'Deleted successfully!' });
   });
 
-  searchForWords = asyncWrapper(async (req: Request, res: Response) => {});
+  searchForWords = asyncWrapper(async (req: Request, res: Response) => {
+    const { word } = req.body;
+
+    const existingWord = await Dictionary.findOne({
+      where: { word, isDeleted: false },
+    });
+
+    if (!existingWord) {
+      throw new BadRequestException('Word does not exist');
+    }
+
+    res.status(200).json({ existingWord });
+  });
 }

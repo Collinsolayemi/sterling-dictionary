@@ -28,4 +28,10 @@ router.post(
   dictionaryController.deleteExistingWord
 );
 
+router.post(
+  '/search-word',
+  handleRestriction.handleUserRestriction,
+  dictionaryController.searchForWords
+);
+
 export default router;

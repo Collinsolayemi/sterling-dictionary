@@ -27,6 +27,27 @@ class HandleRestriction {
       next();
     }
   );
+
+  handleUserRestriction = asyncWrapper(
+    async (req: Request, res: Response, next: NextFunction) => {
+      const token = req.headers.authorization;
+      if (!token) {
+        throw new UnauthorizedException('Please login');
+      }
+
+      const decoded = AuthMiddleware.verifyToken(token);
+      const user = await User.findOne({ where: { email: decoded.userEmail } });
+      const userRole = user?.role;
+
+      if (userRole !== Role.USER) {
+        throw new UnauthorizedException(
+          'Sorry, only a user can perform this action'
+        );
+      }
+
+      next();
+    }
+  );
 }
 
 const handleRestriction = new HandleRestriction();
