@@ -173,13 +173,17 @@ export class AuthController {
   });
 
   resetPassword = asyncWrapper(async (req: Request, res: Response) => {
-    const { token, newPassword } = req.body;
+    const { token, newPassword, confirmPassword } = req.body;
 
     // Find the user by reset token
     const user = await User.findOne({ where: { resetPasswordToken: token } });
 
     if (!user) {
       return res.status(404).json({ message: 'Invalid reset token' });
+    }
+
+    if (newPassword !== confirmPassword) {
+      throw new BadRequestException('password does not match');
     }
 
     // Update user's password
