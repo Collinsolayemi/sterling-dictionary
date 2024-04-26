@@ -160,6 +160,7 @@ export const swaggerDefinition = {
                 properties: {
                   token: { type: 'string' },
                   newPassword: { type: 'string' },
+                  confirmPassword: { type: 'string' },
                 },
               },
             },
