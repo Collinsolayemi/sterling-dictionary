@@ -2,6 +2,7 @@ import express from 'express';
 import { Request, Response } from 'express';
 import * as dotenv from 'dotenv';
 import authRouter from './src/route/user.route';
+import dictionaryRouter from './src/route/dictionary.route';
 import { AppDataSource } from './src/datasource/datasource';
 import errorMiddleware from './src/middleware/error/error.middleware';
 import swaggerJSDoc from 'swagger-jsdoc';
@@ -30,6 +31,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Routes
 app.use('/api/v1', authRouter);
+app.use('/api/v1', dictionaryRouter);
 
 // Error Handling Middleware
 app.get('/health', (req: Request, res: Response) => {
