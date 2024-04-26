@@ -30,3 +30,32 @@ export const login_validation = () => {
     },
   ];
 };
+
+export const forgetPassword_validation = () => {
+  return [
+    check('email').isEmail().withMessage('Email is required'),
+
+    (req: Request, res: Response, next: NextFunction) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+      next();
+    },
+  ];
+};
+
+export const resetPassword_validation = () => {
+  return [
+    check('token').notEmpty().withMessage('Token is required'),
+    check('newPassword').notEmpty().withMessage('New password is required'),
+    
+    (req: Request, res: Response, next: NextFunction) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+      next();
+    },
+  ];
+};

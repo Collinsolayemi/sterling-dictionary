@@ -9,14 +9,6 @@ import { asyncWrapper } from '../../utilis/errors/async.wrapper';
 import { User } from '../../entity/user.entity';
 
 export class AuthMiddleware {
-//   static generateToken = async (userId: string, userEmail: string) => {
-//     const payload = { userId, userEmail };
-//     const secret = process.env.JWT_SECRET || '';
-//     const options = { expiresIn: '1h' };
-
-//     return jwt.sign(payload, secret, options);
-    //   };
-    
     static generateTokens = async (userId: string, userEmail: string) => {
         const accessTokenPayload = { userId, userEmail };
         const refreshTokenPayload = { userId, userEmail };

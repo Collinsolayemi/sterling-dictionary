@@ -15,6 +15,15 @@ export class User extends BaseEntity {
   @Column({ type: 'enum', enum: Role, default: Role.USER })
   role: Role;
 
+  @Column({ type: 'boolean', default: false })
+  isDeleted: boolean;
+
+  @Column({ type: 'varchar', length: 255 })
+  resetPasswordToken: string | null;
+
+  @Column({ type: 'varchar', length: 255 })
+  resetPasswordExpires: number | null;
+
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 }
