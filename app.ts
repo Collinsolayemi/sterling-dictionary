@@ -1,5 +1,6 @@
 import express from 'express';
 import { Request, Response } from 'express';
+import cors from 'cors';
 import * as dotenv from 'dotenv';
 import authRouter from './src/route/user.route';
 import dictionaryRouter from './src/route/dictionary.route';
@@ -19,7 +20,7 @@ const port = process.env.PORT || 3000;
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use();
 // Swagger Setup
 const routeFolderPath = path.join(__dirname, '..', 'src', 'route');
 const options = {
@@ -32,6 +33,11 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // Routes
 app.use('/api/v1', authRouter);
 app.use('/api/v1', dictionaryRouter);
+app.use(
+  cors({
+    origin: ['http://localhost:3000', 'https://s-deliveries.vercel.app'],
+  })
+);
 
 // Error Handling Middleware
 app.get('/health', (req: Request, res: Response) => {
