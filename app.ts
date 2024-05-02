@@ -18,32 +18,8 @@ const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors());
-// app.use(
-//   cors({
-//     origin: ['http://localhost:5173', 'https://s-deliveries.vercel.app/'],
-//   })
-// );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// const allowedOrigins = [
-//   'http://localhost:3000',
-//   'https://s-deliveries.vercel.app',
-//   'https://sterling-dictionary.onrender.com/api/v1',
-//   'https://sterling-dictionary.onrender.com',
-// ];
-// app.use(
-//   cors({
-//     origin: function (origin, callback) {
-//       // Check if the origin is allowed or if it's a preflight request
-//       if (!origin || allowedOrigins.includes(origin)) {
-//         callback(null, true);
-//       } else {
-//         callback(new Error('Not allowed by CORS'));
-//       }
-//     },
-//   })
-// );
 
 // Swagger Setup
 const routeFolderPath = path.join(__dirname, '..', 'src', 'route');

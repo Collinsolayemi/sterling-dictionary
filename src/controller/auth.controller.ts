@@ -129,7 +129,9 @@ export class AuthController {
       userExist.email
     );
 
-    return res.status(200).json({ accessTokens });
+    const userRole = userExist.role;
+
+    return res.status(200).json({ accessTokens, userRole });
   });
 
   async generateResetToken() {
