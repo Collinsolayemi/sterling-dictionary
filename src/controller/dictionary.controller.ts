@@ -28,10 +28,10 @@ export class DictionaryController {
   });
 
   editExistingWord = asyncWrapper(async (req: Request, res: Response) => {
-    const { word, changeWord, meaning } = req.body;
+    const { id, changeWord, meaning } = req.body;
 
     const existingWord = await Dictionary.findOne({
-      where: { word, isDeleted: false },
+      where: { id, isDeleted: false },
     });
 
     if (!existingWord) {
@@ -49,10 +49,10 @@ export class DictionaryController {
   });
 
   deleteExistingWord = asyncWrapper(async (req: Request, res: Response) => {
-    const { word } = req.body;
+    const { id } = req.body;
 
     const existingWord = await Dictionary.findOne({
-      where: { word, isDeleted: false },
+      where: { id, isDeleted: false },
     });
 
     if (!existingWord) {
@@ -77,5 +77,11 @@ export class DictionaryController {
     }
 
     res.status(200).json({ existingWord });
+  });
+
+  getAllExistingWords = asyncWrapper(async (req: Request, res: Response) => {
+    const words = await Dictionary.find({ where: { isDeleted: false } });
+
+    res.status(200).json({ words });
   });
 }

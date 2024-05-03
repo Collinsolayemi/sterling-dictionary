@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express';
-
 import { UnauthorizedException } from '../../utilis/errors/error.utilis';
 import { AuthMiddleware } from '../token/token';
 import { User } from '../../entity/user.entity';
@@ -9,7 +8,7 @@ import { asyncWrapper } from '../../utilis/errors/async.wrapper';
 class HandleRestriction {
   handleAdminRestriction = asyncWrapper(
     async (req: Request, res: Response, next: NextFunction) => {
-      const token = req.headers.authorization;
+      const token = req.headers.authorization?.split(' ')[1];
       if (!token) {
         throw new UnauthorizedException('Please login');
       }
@@ -30,7 +29,7 @@ class HandleRestriction {
 
   handleUserRestriction = asyncWrapper(
     async (req: Request, res: Response, next: NextFunction) => {
-      const token = req.headers.authorization;
+      const token = req.headers.authorization?.split(' ')[1];
       if (!token) {
         throw new UnauthorizedException('Please login');
       }

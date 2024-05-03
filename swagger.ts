@@ -1,3 +1,5 @@
+import { get } from 'http';
+
 export const swaggerDefinition = {
   openapi: '3.0.0',
   info: {
@@ -253,6 +255,18 @@ export const swaggerDefinition = {
       },
     },
 
+    '/all-existing-words': {
+      get: {
+        summary: 'Get all existing words',
+        tags: ['Dictionary'],
+        responses: {
+          '200': {
+            description: 'Successful operation',
+          },
+        },
+      },
+    },
+
     '/search-word': {
       post: {
         summary: 'Search for words',
@@ -280,7 +294,7 @@ export const swaggerDefinition = {
   },
   security: [
     {
-      JWT: [], // Define the JWT security scheme
+      JWT: [],
     },
   ],
   components: {
