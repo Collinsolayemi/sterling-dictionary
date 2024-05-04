@@ -22,7 +22,8 @@ export class AuthMiddleware {
         const accessToken = jwt.sign(accessTokenPayload, accessTokenSecret, accessTokenOptions);
         const refreshToken = jwt.sign(refreshTokenPayload, refreshTokenSecret, refreshTokenOptions);
     
-        return { accessToken, refreshToken };
+      return { accessToken, refreshToken };
+      
       };
 
   static verifyToken(token: any): any {

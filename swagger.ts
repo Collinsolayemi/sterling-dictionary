@@ -189,6 +189,7 @@ export const swaggerDefinition = {
                 properties: {
                   word: { type: 'string' },
                   meaning: { type: 'string' },
+                  link: { type: 'string' },
                 },
               },
             },
@@ -213,7 +214,7 @@ export const swaggerDefinition = {
               schema: {
                 type: 'object',
                 properties: {
-                  word: { type: 'string' },
+                  id: { type: 'string' },
                   changeWord: { type: 'string', nullable: true },
                   meaning: { type: 'string', nullable: true },
                 },
@@ -241,7 +242,7 @@ export const swaggerDefinition = {
               schema: {
                 type: 'object',
                 properties: {
-                  word: { type: 'string' },
+                  id: { type: 'string' },
                 },
               },
             },
@@ -278,7 +279,7 @@ export const swaggerDefinition = {
               schema: {
                 type: 'object',
                 properties: {
-                  word: { type: 'string' },
+                  id: { type: 'string' },
                 },
               },
             },

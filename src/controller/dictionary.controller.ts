@@ -6,7 +6,7 @@ import { BadRequestException } from '../utilis/errors/error.utilis';
 
 export class DictionaryController {
   uploadNewWord = asyncWrapper(async (req: Request, res: Response) => {
-    const { word, meaning } = req.body;
+    const { word, meaning, link } = req.body;
 
     const existingWord = await Dictionary.findOne({
       where: { word, isDeleted: false },
@@ -28,7 +28,7 @@ export class DictionaryController {
   });
 
   editExistingWord = asyncWrapper(async (req: Request, res: Response) => {
-    const { id, changeWord, meaning } = req.body;
+    const { id, word, meaning } = req.body;
 
     const existingWord = await Dictionary.findOne({
       where: { id, isDeleted: false },
@@ -39,7 +39,7 @@ export class DictionaryController {
     }
 
     existingWord.meaning = meaning;
-    existingWord.word = changeWord;
+    existingWord.word = word;
 
     existingWord.save();
 
