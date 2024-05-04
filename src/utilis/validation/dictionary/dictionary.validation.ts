@@ -52,7 +52,7 @@ export const deleteWord_validation = () => {
 
 export const searchWord_validation = () => {
   return [
-    check('id').isString().withMessage('id must be a string'),
+    check('word').isString().withMessage('id must be a string'),
 
     (req: Request, res: Response, next: NextFunction) => {
       const errors = validationResult(req);

@@ -1,5 +1,3 @@
-import { get } from 'http';
-
 export const swaggerDefinition = {
   openapi: '3.0.0',
   info: {
@@ -279,7 +277,7 @@ export const swaggerDefinition = {
               schema: {
                 type: 'object',
                 properties: {
-                  id: { type: 'string' },
+                  word: { type: 'string' },
                 },
               },
             },
