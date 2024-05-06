@@ -9,7 +9,6 @@ import {
 } from '../utilis/errors/error.utilis';
 import { AuthMiddleware } from '../middleware/token/token';
 import { Role } from '../types/user/user';
-import { randomBytes } from 'crypto';
 import EmailSender, { EmailOptions } from '../utilis/email/email';
 
 export class AuthController {
@@ -134,13 +133,10 @@ export class AuthController {
     return res.status(200).json({ accessTokens, userRole });
   });
 
-  async generateResetToken() {
-    // Generate a random buffer of bytes
-    const buffer = randomBytes(32);
-    // Convert the buffer to a hexadecimal string
-    const token = buffer.toString('hex');
-
-    return token;
+  async generateOtp() {
+    const otp = Math.floor(Math.random() * 9000) + 1000;
+    const otpString = otp.toString();
+    return otpString;
   }
 
   forgetPassword = asyncWrapper(async (req: Request, res: Response) => {
@@ -151,46 +147,55 @@ export class AuthController {
       throw new NotFoundException('User not found');
     }
 
-    const resetToken = await this.generateResetToken();
+    const otp = await this.generateOtp();
+    const saltRounds = 10;
+    const hashOtp = await bcrypt.hash(otp, saltRounds);
 
-    user.resetPasswordToken = resetToken;
-    user.resetPasswordExpires = Date.now() + 3600000;
+    user.resetPasswordOtp = hashOtp;
+    user.resetPasswordExpires = Date.now() + 300000;
+
     await user.save();
-
-    const resetLink = `http://localhost:3000/api-docs?token=${resetToken}`;
 
     const emailSender = new EmailSender();
 
     const emailOptions: EmailOptions = {
       email: email,
       subject: 'Verification OTP',
-      message: `Please click ${resetLink} to verify your email.`,
+      message: `Your verification OTP is ${otp}. Please use this OTP to verify your email.`,
     };
 
     emailSender.sendEmail(emailOptions);
 
     res
       .status(200)
-      .json({ message: 'check your email for reset password link' });
+      .json({ message: 'check your email for reset password OTP' });
   });
 
   resetPassword = asyncWrapper(async (req: Request, res: Response) => {
-    const { token, newPassword, confirmPassword } = req.body;
+    const { otp, email, newPassword, confirmPassword } = req.body;
 
-    // Find the user by reset token
-    const user = await User.findOne({ where: { resetPasswordToken: token } });
+    const user = await User.findOne({ where: { email } });
 
     if (!user) {
-      return res.status(404).json({ message: 'Invalid reset token' });
+      throw new NotFoundException('User not found');
+    }
+
+    const isOtpMatch = await bcrypt.compare(otp, user.resetPasswordOtp);
+
+    if (!isOtpMatch) {
+      throw new BadRequestException('Otp Mismatch');
     }
 
     if (newPassword !== confirmPassword) {
       throw new BadRequestException('password does not match');
     }
 
+    const saltRounds = 10;
+    const hashPassword = await bcrypt.hash(newPassword, saltRounds);
+
     // Update user's password
-    user.password = newPassword;
-    user.resetPasswordToken = null;
+    user.password = hashPassword;
+    user.resetPasswordOtp = '';
     user.resetPasswordExpires = null;
     await user.save();
 
@@ -199,5 +204,30 @@ export class AuthController {
 
   createSubAdmin = asyncWrapper(async (req: Request, res: Response) => {
     const { email, password } = req.body;
+
+    const userExist = await User.findOne({ where: { email } });
+
+    if (userExist) {
+      throw new EmailAlreadyExistsExeption('Email already exists');
+    }
+
+    const saltRounds = 10;
+
+    const hashPassword = await bcrypt.hash(password, saltRounds);
+
+    const user = new User();
+    user.email = email;
+    user.password = hashPassword;
+    user.role = Role.SUB_ADMIN;
+    user.save();
+
+    const accessTokens = await AuthMiddleware.generateTokens(
+      user.id,
+      user.email
+    );
+
+    const userRole = user.role;
+
+    return res.status(201).json({ userRole, accessTokens });
   });
 }

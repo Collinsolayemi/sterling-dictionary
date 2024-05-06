@@ -47,9 +47,17 @@ export const forgetPassword_validation = () => {
 
 export const resetPassword_validation = () => {
   return [
-    check('token').notEmpty().withMessage('Token is required'),
-    check('newPassword').notEmpty().withMessage('New password is required'),
-    
+    check('email').optional(),
+    check('otp').notEmpty().isString().withMessage('Otp is required'),
+    check('newPassword')
+      .notEmpty()
+      .isString()
+      .withMessage('New password is required'),
+    check('confirmPassword')
+      .notEmpty()
+      .isString()
+      .withMessage('confirm password is required'),
+
     (req: Request, res: Response, next: NextFunction) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {

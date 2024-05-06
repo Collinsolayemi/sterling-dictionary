@@ -158,7 +158,8 @@ export const swaggerDefinition = {
               schema: {
                 type: 'object',
                 properties: {
-                  token: { type: 'string' },
+                  email: { type: 'string' },
+                  otp: { type: 'string' },
                   newPassword: { type: 'string' },
                   confirmPassword: { type: 'string' },
                 },

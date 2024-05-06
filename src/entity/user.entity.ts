@@ -19,7 +19,7 @@ export class User extends BaseEntity {
   isDeleted: boolean;
 
   @Column({ type: 'varchar', length: 255 })
-  resetPasswordToken: string | null;
+  resetPasswordOtp: string;
 
   @Column({ type: 'varchar', length: 255 })
   resetPasswordExpires: number | null;
