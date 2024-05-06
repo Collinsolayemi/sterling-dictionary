@@ -42,6 +42,7 @@ router.post(
 
 router.post(
   '/send-word-to-email',
+  handleRestriction.handleUserRestriction,
   dictionaryController.sendWordToEmail
 );
 
