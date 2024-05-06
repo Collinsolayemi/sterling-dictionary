@@ -39,6 +39,12 @@ router.post(
   dictionaryController.searchForWords
 );
 
+
+router.post(
+  '/send-word-to-email',
+  dictionaryController.sendWordToEmail
+);
+
 router.get('/all-existing-words', dictionaryController.getAllExistingWords);
 
 export default router;

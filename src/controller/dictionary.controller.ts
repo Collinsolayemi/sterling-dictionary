@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { asyncWrapper } from '../utilis/errors/async.wrapper';
 import { Dictionary } from '../entity/dictionary.entity';
 import { BadRequestException } from '../utilis/errors/error.utilis';
+import EmailSender, { EmailOptions } from '../utilis/email/email';
 
 export class DictionaryController {
   uploadNewWord = asyncWrapper(async (req: Request, res: Response) => {
@@ -83,5 +84,23 @@ export class DictionaryController {
     const words = await Dictionary.find({ where: { isDeleted: false } });
 
     res.status(200).json({ words });
+  });
+
+  sendWordToEmail = asyncWrapper(async (req: Request, res: Response) => {
+    const { word } = req.body;
+
+    const email = '';
+
+    const emailSender = new EmailSender();
+
+    const emailOptions: EmailOptions = {
+      email,
+      subject: 'Unavailable Word',
+      message: `A user searched for  "${word}". And it is not available.`,
+    };
+
+    emailSender.sendEmail(emailOptions);
+
+    res.status(200).json({});
   });
 }

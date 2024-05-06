@@ -291,6 +291,31 @@ export const swaggerDefinition = {
         },
       },
     },
+
+    '/send-word-to-email': {
+      post: {
+        summary: 'Send unavailable word to admin email',
+        tags: ['Dictionary'],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  word: { type: 'string' },
+                },
+              },
+            },
+          },
+        },
+        responses: {
+          '200': {
+            description: 'Successful operation',
+          },
+        },
+      },
+    },
   },
   security: [
     {
