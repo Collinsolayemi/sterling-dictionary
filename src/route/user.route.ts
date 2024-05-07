@@ -4,6 +4,7 @@ import {
   login_validation,
   resetPassword_validation,
   signup_validation,
+  verifyOtp_validation,
 } from '../utilis/validation/user/user.validation';
 import { AuthController } from '../controller/auth.controller';
 import handleRestriction from '../middleware/role/user.role';
@@ -25,6 +26,12 @@ router.post(
   '/forget-password',
   forgetPassword_validation(),
   authController.forgetPassword
+);
+
+router.post(
+  '/verify-otp',
+  verifyOtp_validation(),
+  authController.verifyOtp
 );
 
 router.post(

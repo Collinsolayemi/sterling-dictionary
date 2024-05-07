@@ -147,6 +147,32 @@ export const swaggerDefinition = {
       },
     },
 
+    '/verify-otp': {
+      post: {
+        summary: 'Verify the otp sent to user',
+        tags: ['Auth'],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  email: { type: 'string' },
+                  otp: { type: 'string' },
+                },
+              },
+            },
+          },
+        },
+        responses: {
+          '200': {
+            description: 'Successful operation',
+          },
+        },
+      },
+    },
+
     '/reset-password': {
       post: {
         summary: 'Reset password',
@@ -159,7 +185,6 @@ export const swaggerDefinition = {
                 type: 'object',
                 properties: {
                   email: { type: 'string' },
-                  otp: { type: 'string' },
                   newPassword: { type: 'string' },
                   confirmPassword: { type: 'string' },
                 },

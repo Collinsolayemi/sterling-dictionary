@@ -45,10 +45,24 @@ export const forgetPassword_validation = () => {
   ];
 };
 
-export const resetPassword_validation = () => {
+export const verifyOtp_validation = () => {
   return [
     check('email').optional(),
     check('otp').notEmpty().isString().withMessage('Otp is required'),
+
+    (req: Request, res: Response, next: NextFunction) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+      next();
+    },
+  ];
+};
+
+export const resetPassword_validation = () => {
+  return [
+    check('email').optional(),
     check('newPassword')
       .notEmpty()
       .isString()

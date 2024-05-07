@@ -172,18 +172,12 @@ export class AuthController {
   });
 
   resetPassword = asyncWrapper(async (req: Request, res: Response) => {
-    const { otp, email, newPassword, confirmPassword } = req.body;
+    const { email, newPassword, confirmPassword } = req.body;
 
     const user = await User.findOne({ where: { email } });
 
     if (!user) {
       throw new NotFoundException('User not found');
-    }
-
-    const isOtpMatch = await bcrypt.compare(otp, user.resetPasswordOtp);
-
-    if (!isOtpMatch) {
-      throw new BadRequestException('Otp Mismatch');
     }
 
     if (newPassword !== confirmPassword) {
@@ -200,6 +194,24 @@ export class AuthController {
     await user.save();
 
     return res.status(200).json({ message: 'Password reset successfully' });
+  });
+
+  verifyOtp = asyncWrapper(async (req: Request, res: Response) => {
+    const { email, otp } = req.body;
+
+    const user = await User.findOne({ where: { email } });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const isOtpMatch = await bcrypt.compare(otp, user.resetPasswordOtp);
+
+    if (!isOtpMatch) {
+      throw new BadRequestException('Otp Mismatch');
+    }
+
+    res.status(200).json({ message: 'verification successful' });
   });
 
   createSubAdmin = asyncWrapper(async (req: Request, res: Response) => {

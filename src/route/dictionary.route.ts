@@ -39,7 +39,6 @@ router.post(
   dictionaryController.searchForWords
 );
 
-
 router.post(
   '/send-word-to-email',
   handleRestriction.handleUserRestriction,
