@@ -4,7 +4,12 @@ import { check, validationResult } from 'express-validator';
 export const signup_validation = () => {
   return [
     check('email').isEmail().withMessage('Input a valid email'),
-    check('password').isString().withMessage('Password is not strong'),
+    check('password')
+      .isString()
+      .matches(/^[a-zA-Z0-9!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]*$/)
+      .withMessage(
+        'Password can only contain alphanumeric characters and special characters'
+      ),
 
     (req: Request, res: Response, next: NextFunction) => {
       const errors = validationResult(req);
