@@ -20,6 +20,12 @@ router.post(
 );
 
 router.post(
+  '/upload-many-word',
+  handleRestriction.handleAdminRestriction,
+  dictionaryController.addManyWordsAndMeaning
+);
+
+router.post(
   '/edit-existing-word',
   handleRestriction.handleAdminRestriction,
   editExistingWord_validation(),

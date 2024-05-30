@@ -4,6 +4,8 @@ import { asyncWrapper } from '../utilis/errors/async.wrapper';
 import { Dictionary } from '../entity/dictionary.entity';
 import { BadRequestException } from '../utilis/errors/error.utilis';
 import EmailSender, { EmailOptions } from '../utilis/email/email';
+import { In, getRepository } from 'typeorm';
+import { AppDataSource } from '../datasource/datasource';
 
 export class DictionaryController {
   uploadNewWord = asyncWrapper(async (req: Request, res: Response) => {
@@ -102,5 +104,59 @@ export class DictionaryController {
     emailSender.sendEmail(emailOptions);
 
     res.status(200).json({});
+  });
+
+  addManyWordsAndMeaning = asyncWrapper(async (req: Request, res: Response) => {
+    const wordsAndMeanings = req.body;
+
+    // Validate the request body
+    if (!Array.isArray(wordsAndMeanings)) {
+      return res.status(400).json({
+        message:
+          'Invalid input format. Expected an array of word-meaning pairs.',
+      });
+    }
+
+    for (const entry of wordsAndMeanings) {
+      if (typeof entry.word !== 'string' || typeof entry.meaning !== 'string') {
+        return res.status(400).json({
+          message:
+            'Invalid input format. Each entry must have a "word" and a "meaning" as strings.',
+        });
+      }
+    }
+
+    const dictionaryRepository = AppDataSource.getRepository(Dictionary);
+
+    const words = wordsAndMeanings.map((entry) => entry.word);
+
+    // Fetch existing words from the database
+    const existingEntries = await dictionaryRepository.find({
+      where: { word: In(words) },
+    });
+
+    const existingWords = existingEntries.map((entry) => entry.word);
+
+    // Filter out words that already exist
+    const newWordsAndMeanings = wordsAndMeanings.filter(
+      (entry) => !existingWords.includes(entry.word)
+    );
+
+    if (newWordsAndMeanings.length === 0) {
+      return res.status(200).json({
+        message: 'No new words to add. All provided words already exist.',
+      });
+    }
+
+    const entities = newWordsAndMeanings.map(({ word, meaning }) => {
+      const dictionaryEntry = new Dictionary();
+      dictionaryEntry.word = word;
+      dictionaryEntry.meaning = meaning;
+      return dictionaryEntry;
+    });
+
+    await dictionaryRepository.save(entities);
+
+    res.status(200).json({ message: 'Words and meanings added successfully' });
   });
 }

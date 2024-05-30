@@ -317,6 +317,73 @@ export const swaggerDefinition = {
       },
     },
 
+    '/upload-many-word': {
+      post: {
+        summary: 'Upload many words at once by admin',
+        tags: ['Dictionary'],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'array',
+                items: {
+                  type: 'object',
+                  properties: {
+                    word: { type: 'string' },
+                    meaning: { type: 'string' },
+                  },
+                  required: ['word', 'meaning'],
+                },
+              },
+            },
+          },
+        },
+        responses: {
+          '200': {
+            description: 'Successful operation',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    message: { type: 'string' },
+                  },
+                },
+              },
+            },
+          },
+          '400': {
+            description: 'Invalid input format',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    message: { type: 'string' },
+                  },
+                },
+              },
+            },
+          },
+          '500': {
+            description: 'Error adding words and meanings',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    message: { type: 'string' },
+                    error: { type: 'string' },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+
     '/send-word-to-email': {
       post: {
         summary: 'Send unavailable word to admin email',
