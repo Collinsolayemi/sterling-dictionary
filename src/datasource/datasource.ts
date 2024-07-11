@@ -16,9 +16,10 @@ export const AppDataSource = new DataSource({
   host: DB_HOST,
   port: 3306,
   username: DB_USERNAME,
-  password: NODE_ENV === 'dev' ? DB_PASSWORD : '',
+  password: NODE_ENV === 'production' ? 'DB_PASSWORD' : '',
   database: DB_DATABASE,
+  connectTimeout: 30000,
   entities: [User, Dictionary],
   migrations: [__dirname + '../migration/*.ts'],
-  synchronize: NODE_ENV === 'prod' ? false : true,
+  synchronize: NODE_ENV === 'production' ? false : true,
 });

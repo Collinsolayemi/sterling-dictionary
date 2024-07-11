@@ -1,10 +1,9 @@
 import { Request, Response } from 'express';
-
 import { asyncWrapper } from '../utilis/errors/async.wrapper';
 import { Dictionary } from '../entity/dictionary.entity';
 import { BadRequestException } from '../utilis/errors/error.utilis';
 import EmailSender, { EmailOptions } from '../utilis/email/email';
-import { In, getRepository } from 'typeorm';
+import { In } from 'typeorm';
 import { AppDataSource } from '../datasource/datasource';
 
 export class DictionaryController {

@@ -9,7 +9,7 @@
     "esModuleInterop": true,
     "strict": true,
     "strictPropertyInitialization": false,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
   },
   //   "include": ["src/**/*.ts"],
   "include": ["**/*.ts"],

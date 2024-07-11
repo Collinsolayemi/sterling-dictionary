@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import * as dotenv from 'dotenv';
-import authRouter from './src/route/auth.route'
+import authRouter from './src/route/auth.route';
 import dictionaryRouter from './src/route/dictionary.route';
 import { AppDataSource } from './src/datasource/datasource';
 import errorMiddleware from './src/middleware/error/error.middleware';

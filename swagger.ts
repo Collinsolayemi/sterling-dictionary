@@ -15,6 +15,10 @@ export const swaggerDefinition = {
       url: 'https://sterling-dictionary.onrender.com/api/v1',
       description: 'Development server',
     },
+    {
+      url: 'http://jargon.com/api/',
+      description: 'Production server',
+    },
   ],
   paths: {
     '/onboard-user': {

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import * as bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { asyncWrapper } from '../utilis/errors/async.wrapper';
 import { User } from '../entity/user.entity';
 import {
